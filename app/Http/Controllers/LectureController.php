@@ -13,7 +13,7 @@ class LectureController extends Controller
     public function saveLecture(Request $request) {
         $lecture = new Lecture;
 
-        // Valida que no exista el nombre
+        // Validates that name does not exists
         $lectureExists = $lecture::where('name', $request['name'])
             ->where('status', 1)
             ->first();
@@ -22,7 +22,7 @@ class LectureController extends Controller
             return abort(env('ERROR_STATUS_CODE'), 'El nombre de la materia ya está registrado');
         }
 
-        // Valida que no exista el maestro
+        // Validates that teacher does not exists
         $teacherExists = $lecture::where('teacher', $request['teacher'])
             ->where('status', 1)
             ->first();
@@ -31,7 +31,7 @@ class LectureController extends Controller
             return abort(env('ERROR_STATUS_CODE'), 'El maestro ya está asignado a otra materia');
         }
 
-        // Valida que no exista el horario
+        // Validates that schedule does not exists
         $scheduleExists = $lecture::where('schedule', $request['schedule'])
             ->where('status', 1)
             ->first();
@@ -67,7 +67,7 @@ class LectureController extends Controller
             )
             ->first();
 
-        // Valida que exista la materia
+        // Validates that lecture id exists
         if (!isset($lectureExists)) {
             return abort(env('ERROR_STATUS_CODE'), 'La materia no existe o está eliminada');
         }
@@ -88,12 +88,12 @@ class LectureController extends Controller
             )
             ->first();
 
-        // Valida que exista la materia
+        // Validates that lecture id exists
         if (!isset($lectureExists)) {
             return abort(env('ERROR_STATUS_CODE'), 'La materia no existe o está eliminada');
         }
 
-        // Validación de no tener materias
+        // Validates that lecture does not have any students assigned
         $studentLecture = new StudentLecture;
         $studentLectureCount = $studentLecture::where('lectureId', $lectureId)
             ->where('status', 1)
@@ -117,7 +117,7 @@ class LectureController extends Controller
             ->where('status', 1)
             ->first();
 
-        // Valida que exista la asignación
+        // Validates that the assignation does not exists
         if (isset($studentLectureExists)) {
             return abort(env('ERROR_STATUS_CODE'), 'La asignación que deseas realizar ya existe');
         }

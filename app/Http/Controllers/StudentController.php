@@ -3,18 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Models\Lecture;
 use App\Models\Student;
 use App\Models\StudentLecture;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-
-// Completados
-// saveStudent()
-// getAllStudents
-// getStudentById()
-// DeleteStudent()
-
 
 class StudentController extends Controller
 {
@@ -29,10 +21,6 @@ class StudentController extends Controller
 
     public function saveStudent(Request $request) {
         $student = new Student;
-
-        // 'givenName',
-        // 'surName',
-        // 'email',
 
         $studentExists = $student::where('givenName', $request['givenName'])
             ->where('givenName', $request['givenName'])
@@ -71,10 +59,6 @@ class StudentController extends Controller
         $student = new Student;
 
         $studentResult = $student::where('status', 1)
-            // ->where('givenName', 'like', '%' . $searchKey . '%')
-            // ->orderBy($orderColumn, $orderDirection)
-            // ->limit($pageSize)
-            // ->offset($pageIndex)
             ->select(
                 'id',
                 'givenName',
@@ -127,7 +111,7 @@ class StudentController extends Controller
             return abort(env('ERROR_STATUS_CODE'), 'El estudiante no existe o está eliminado');
         }
 
-        // Validación de no tener materias
+        // Validates that the student does not have any lectures assigned
         $studentLecture = new StudentLecture;
         $studentLectureCount = $studentLecture::where('studentId', $studentId)
             ->where('status', 1)
